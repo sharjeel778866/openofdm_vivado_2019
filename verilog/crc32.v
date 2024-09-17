@@ -67,3 +67,4 @@ always @(posedge clk, posedge rst) begin
     end
 end // always
 endmodule // crc
+
