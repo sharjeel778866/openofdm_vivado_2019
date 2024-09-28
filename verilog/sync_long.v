@@ -1,27 +1,61 @@
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// Project Name: RA-Sentinel
+// 
+// Module Name: sync_long
+//
+// Engineer: Tobias Weber
+// Target Devices: Artix 7, XC7A100T
+// Tool Versions: Vivado 2024.1
+// Description:
+// 
+// Fork of the openofdm project
+// https://github.com/jhshi/openofdm
+// 
+// Dependencies: 
+// 
+// Revision 1.00 - File Created
+// Project: https://github.com/Tobias-DG3YEV/RA-Sentinel
+// 
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2024 Tobias Weber
+// License: GNU GPL v3
+//
+// This project is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program. If not, see
+// <http://www.gnu.org/licenses/> for a copy.
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
+
 module sync_long (
-    input clock,
-    input reset,
-    input enable,
+    input i_clock,
+    input i_reset,
+    input i_enable,
 
-    input [31:0] sample_in,
-    input sample_in_strobe,
-    input signed [15:0] phase_offset,
-    input short_gi,
-    input [3:0] fft_win_shift,
+    input [31:0] i_sample_in,
+    input i_sample_in_strobe,
+    input signed [15:0] i_phase_offset,
+    input i_short_gi,
+    input [3:0] i_fft_win_shift,
 
-    output [`ROTATE_LUT_LEN_SHIFT-1:0] rot_addr,
-    input [31:0] rot_data,
+    output [`ROTATE_LUT_LEN_SHIFT-1:0] o_rot_addr,
+    input [31:0] i_rot_data,
 
-    output [31:0] metric,
-    output metric_stb,
-    output reg long_preamble_detected,
+    output [31:0] o_metric,
+    output o_metric_stb,
+    output reg o_long_preamble_detected,
 
-    output reg [31:0] sample_out,
-    output reg sample_out_strobe,
-    output reg [15:0] num_ofdm_symbol,
+    output reg [31:0] o_spectrum_out,
+    output reg o_spectrum_out_stb,
+    output reg [15:0] o_num_ofdm_symbol,
 
-    output reg signed [31:0] phase_offset_taken,
-    output reg [1:0] state
+    output reg signed [31:0] o_phase_offset_taken,
+    output reg [1:0] o_state
 );
 `include "common_params.v"
 
@@ -32,7 +66,7 @@ localparam NUM_STS_TAIL = 32;
 reg [15:0] in_offset;
 reg [IN_BUF_LEN_SHIFT-1:0] in_waddr;
 reg [IN_BUF_LEN_SHIFT-1:0] in_raddr;
-wire [IN_BUF_LEN_SHIFT-1:0] gi_skip = short_gi? 9: 17;
+wire [IN_BUF_LEN_SHIFT-1:0] gi_skip = i_short_gi? 9: 17;
 reg signed [31:0] num_input_produced;
 reg signed [31:0] num_input_consumed;
 reg signed [31:0] num_input_avail;
@@ -53,25 +87,25 @@ reg sum_stb;
 reg signed [31:0] phase_correction;
 reg signed [31:0] next_phase_correction;
 
-reg reset_delay ; // add reset signal for fft, somehow all kinds of event flag raises when feeding real rf signal, maybe reset will help
-wire fft_resetn ;
+reg i_reset_delay ; // add i_reset signal for fft, somehow all kinds of event flag raises when feeding real rf signal, maybe i_reset will help
+wire fft_i_resetn ;
 
-always @(posedge clock) begin
-    reset_delay = reset ;
+always @(posedge i_clock) begin
+    i_reset_delay = i_reset ;
 end
-assign fft_resetn = (~reset) & (~reset_delay); // make sure resetn is at least 2 clock cycles low 
+assign fft_i_resetn = (~i_reset) & (~i_reset_delay); // make sure i_resetn is at least 2 i_clock cycles low 
 
 complex_to_mag #(.DATA_WIDTH(32)) sum_mag_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset),
 
-    .i(sum_i),
-    .q(sum_q),
-    .input_strobe(sum_stb),
+    .i_i(sum_i),
+    .i_q(sum_q),
+    .i_input_strobe(sum_stb),
 
-    .mag(metric),
-    .mag_stb(metric_stb)
+    .o_mag(o_metric),
+    .o_mag_stb(o_metric_stb)
 );
 
 reg [31:0] metric_max1;
@@ -98,9 +132,9 @@ reg [31:0] stage_Y6;
 reg [31:0] stage_Y7;
 
 stage_mult stage_mult_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset),
 
     .X0(stage_X0),
     .X1(stage_X1),
@@ -163,49 +197,49 @@ wire s_axis_config_tready;
 wire m_axis_data_tlast;
 
 ram_2port  #(.DWIDTH(32), .AWIDTH(IN_BUF_LEN_SHIFT)) in_buf (
-    .clka(clock),
-    .ena(1),
-    .wea(sample_in_strobe),
-    .addra(in_waddr),
-    .dia(sample_in),
-    .doa(),
-    .clkb(clock),
-    .enb(fft_start | fft_loading),
-    .web(1'b0),
-    .addrb(in_raddr),
-    .dib(32'hFFFF),
-    .dob({raw_i, raw_q})
+    .i_clka(i_clock),
+    .i_ena(1),
+    .i_wea(i_sample_in_strobe),
+    .i_addra(in_waddr),
+    .i_dia(i_sample_in),
+    .o_doa(),
+    .i_clkb(i_clock),
+    .i_enb(fft_start | fft_loading),
+    .i_web(1'b0),
+    .i_addrb(in_raddr),
+    .i_dib(32'hFFFF),
+    .o_dob({raw_i, raw_q})
 );
 
 rotate rotate_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset),
 
-    .in_i(raw_i),
-    .in_q(raw_q),
-    .phase(phase_correction),
-    .input_strobe(raw_stb),
+    .i_in_i(raw_i),
+    .i_in_q(raw_q),
+    .i_phase(phase_correction),
+    .i_input_strobe(raw_stb),
 
-    .rot_addr(rot_addr),
-    .rot_data(rot_data),
+    .o_rot_addr(o_rot_addr),
+    .i_rot_data(i_rot_data),
     
-    .out_i(fft_in_re),
-    .out_q(fft_in_im),
-    .output_strobe(fft_in_stb)
+    .o_out_i(fft_in_re),
+    .o_out_q(fft_in_im),
+    .o_output_strobe(fft_in_stb)
 );
 
 delayT #(.DATA_WIDTH(1), .DELAY(10)) fft_delay_inst (
-    .clock(clock),
-    .reset(reset),
+    .i_clock(i_clock),
+    .i_reset(i_reset),
 
-    .data_in(fft_din_data_tlast),
-    .data_out(fft_din_data_tlast_delayed)
+    .i_data_in(fft_din_data_tlast),
+    .o_data_out(fft_din_data_tlast_delayed)
 );
 
 ///the fft7_1 isntance is commented out, as it is upgraded to fft9 version
 /*xfft_v7_1 dft_inst (
-    .clk(clock),
+    .clk(i_clock),
     .fwd_inv(1),
     .start(fft_start_delayed),
     .fwd_inv_we(1),
@@ -222,8 +256,8 @@ delayT #(.DATA_WIDTH(1), .DELAY(10)) fft_delay_inst (
 
 
 xfft_v9 dft_inst (
-  .aclk(clock),       // input wire aclk
-  .aresetn(fft_resetn),                                               
+  .aclk(i_clock),       // input wire aclk
+  .aresetn(fft_i_resetn),                                               
   .s_axis_config_tdata({7'b0, 1'b1}),                          // input wire [7 : 0] s_axis_config_tdata, use LSB to indicate it is forward transform, the rest should be ignored
   .s_axis_config_tvalid(1'b1),                                 // input wire s_axis_config_tvalid
   .s_axis_config_tready(s_axis_config_tready),                // output wire s_axis_config_tready
@@ -247,29 +281,29 @@ reg [15:0] num_sample;
 
 //integer i;
 integer j;
-always @(posedge clock) begin
-    if (reset) begin
+always @(posedge i_clock) begin
+    if (i_reset) begin
         for (j = 0; j < 32; j= j+1) begin
             cross_corr_buf[j] <= 0;
         end
         do_clear();
-        state <= S_SKIPPING;
+        o_state <= S_SKIPPING;
         fft_din_data_tlast <= 1'b0;
-        long_preamble_detected <= 0;
-    end else if (enable) begin
-        if (sample_in_strobe && state != S_SKIPPING) begin
+        o_long_preamble_detected <= 0;
+    end else if (i_enable) begin
+        if (i_sample_in_strobe && o_state != S_SKIPPING) begin
             in_waddr <= in_waddr + 1;
             num_input_produced <= num_input_produced + 1;
         end
         num_input_avail <= num_input_produced - num_input_consumed;
 
-        case(state)
+        case(o_state)
             S_SKIPPING: begin
                 // skip the tail of  short preamble
                 if (num_sample >= NUM_STS_TAIL) begin
                     num_sample <= 0;
-                    state <= S_WAIT_FOR_FIRST_PEAK;
-                end else if (sample_in_strobe) begin
+                    o_state <= S_WAIT_FOR_FIRST_PEAK;
+                end else if (i_sample_in_strobe) begin
                     num_sample <= num_sample + 1;
                 end
             end
@@ -277,13 +311,13 @@ always @(posedge clock) begin
             S_WAIT_FOR_FIRST_PEAK: begin
                 do_mult();
 
-                if (metric_stb && (metric > metric_max1)) begin
-                    metric_max1 <= metric;
-                    addr1 <= in_raddr - 1 -fft_win_shift;
+                if (o_metric_stb && (o_metric > metric_max1)) begin
+                    metric_max1 <= o_metric;
+                    addr1 <= in_raddr - 1 -i_fft_win_shift;
                 end
 
                 if (num_sample >= 88) begin
-                    long_preamble_detected <= 1;
+                    o_long_preamble_detected <= 1;
                     num_sample <= 0;
                     mult_strobe <= 0;
                     sum_stb <= 0;
@@ -292,23 +326,23 @@ always @(posedge clock) begin
                     in_raddr <= addr1 - 32;
                     num_input_consumed <= addr1 - 32;
                     in_offset <= 0;
-                    num_ofdm_symbol <= 0;
+                    o_num_ofdm_symbol <= 0;
                     phase_correction <= 0;
-                    next_phase_correction <= phase_offset;
-                    phase_offset_taken <= phase_offset;
-                    state <= S_FFT;
-                end else if (metric_stb) begin
+                    next_phase_correction <= i_phase_offset;
+                    o_phase_offset_taken <= i_phase_offset;
+                    o_state <= S_FFT;
+                end else if (o_metric_stb) begin
                     num_sample <= num_sample + 1;
                 end
 
             end
 
             S_FFT: begin
-                if (long_preamble_detected) begin
+                if (o_long_preamble_detected) begin
                     `ifdef DEBUG_PRINT
                         $display("Long preamble detected");
                     `endif
-                    long_preamble_detected <= 0;
+                    o_long_preamble_detected <= 0;
                 end
 
                 if (~fft_loading && num_input_avail > 88) begin
@@ -323,33 +357,33 @@ always @(posedge clock) begin
 
                 raw_stb <= fft_start | fft_loading;
                 if (raw_stb) begin
-                    if (phase_offset > 0) begin
+                    if (i_phase_offset > 0) begin
                         if (next_phase_correction > PI) begin
                             phase_correction <= next_phase_correction - DOUBLE_PI;
-                            if(in_offset == 63 && num_ofdm_symbol > 0)
-                                next_phase_correction <= next_phase_correction - DOUBLE_PI + phase_offset + (short_gi ? phase_offset<<<3 : phase_offset<<<4);
+                            if(in_offset == 63 && o_num_ofdm_symbol > 0)
+                                next_phase_correction <= next_phase_correction - DOUBLE_PI + i_phase_offset + (i_short_gi ? i_phase_offset<<<3 : i_phase_offset<<<4);
                             else
-                                next_phase_correction <= next_phase_correction - DOUBLE_PI + phase_offset;
+                                next_phase_correction <= next_phase_correction - DOUBLE_PI + i_phase_offset;
                         end else begin
                             phase_correction <= next_phase_correction;
-                            if(in_offset == 63 && num_ofdm_symbol > 0)
-                                next_phase_correction <= next_phase_correction + phase_offset + (short_gi ? phase_offset<<<3 : phase_offset<<<4);
+                            if(in_offset == 63 && o_num_ofdm_symbol > 0)
+                                next_phase_correction <= next_phase_correction + i_phase_offset + (i_short_gi ? i_phase_offset<<<3 : i_phase_offset<<<4);
                             else
-                                next_phase_correction <= next_phase_correction + phase_offset;
+                                next_phase_correction <= next_phase_correction + i_phase_offset;
                         end
                     end else begin
                         if (next_phase_correction < -PI) begin
                             phase_correction <= next_phase_correction + DOUBLE_PI;
-                            if(in_offset == 63 && num_ofdm_symbol > 0)
-                                next_phase_correction <= next_phase_correction + DOUBLE_PI + phase_offset + (short_gi ? phase_offset<<<3 : phase_offset<<<4);
+                            if(in_offset == 63 && o_num_ofdm_symbol > 0)
+                                next_phase_correction <= next_phase_correction + DOUBLE_PI + i_phase_offset + (i_short_gi ? i_phase_offset<<<3 : i_phase_offset<<<4);
                             else
-                                next_phase_correction <= next_phase_correction + DOUBLE_PI + phase_offset;
+                                next_phase_correction <= next_phase_correction + DOUBLE_PI + i_phase_offset;
                         end else begin
                             phase_correction <= next_phase_correction;
-                            if(in_offset == 63 && num_ofdm_symbol > 0)
-                                next_phase_correction <= next_phase_correction + phase_offset + (short_gi ? phase_offset<<<3 : phase_offset<<<4);
+                            if(in_offset == 63 && o_num_ofdm_symbol > 0)
+                                next_phase_correction <= next_phase_correction + i_phase_offset + (i_short_gi ? i_phase_offset<<<3 : i_phase_offset<<<4);
                             else
-                                next_phase_correction <= next_phase_correction + phase_offset;
+                                next_phase_correction <= next_phase_correction + i_phase_offset;
                         end
                     end
                 end
@@ -364,8 +398,8 @@ always @(posedge clock) begin
                     if (in_offset == 63) begin
                         fft_din_data_tlast <= 1'b0;
                         fft_loading <= 0;
-                        num_ofdm_symbol <= num_ofdm_symbol + 1;
-                        if (num_ofdm_symbol > 0) begin
+                        o_num_ofdm_symbol <= o_num_ofdm_symbol + 1;
+                        if (o_num_ofdm_symbol > 0) begin
                             // skip the Guard Interval for data symbols
                             in_raddr <= in_raddr + gi_skip;
                             num_input_consumed <= num_input_consumed + gi_skip;
@@ -379,27 +413,27 @@ always @(posedge clock) begin
                     end
                 end
 
-                sample_out_strobe <= fft_valid;
-                sample_out <= fft_out;
+                o_spectrum_out_stb <= fft_valid;
+                o_spectrum_out <= fft_out;
             end
 
             S_IDLE: begin
             end
 
             default: begin
-                state <= S_WAIT_FOR_FIRST_PEAK;
+                o_state <= S_WAIT_FOR_FIRST_PEAK;
             end
         endcase
     end else begin
-        sample_out_strobe <= 0;
+        o_spectrum_out_stb <= 0;
     end
 end
 
 integer do_mult_i;
 task do_mult; begin
     // cross correlation of the first 16 samples of LTS
-    if (sample_in_strobe) begin
-        cross_corr_buf[31] <= sample_in;
+    if (i_sample_in_strobe) begin
+        cross_corr_buf[31] <= i_sample_in;
         for (do_mult_i = 0; do_mult_i < 31; do_mult_i = do_mult_i+1) begin
             cross_corr_buf[do_mult_i] <= cross_corr_buf[do_mult_i+1];
         end
@@ -538,15 +572,15 @@ task do_clear; begin
 
     mult_stage <= 0;
 
-    long_preamble_detected <= 0;
+    o_long_preamble_detected <= 0;
     num_sample <= 0;
-    num_ofdm_symbol <= 0;
+    o_num_ofdm_symbol <= 0;
 
     fft_start <= 0;
     fft_loading <= 0;
 
-    sample_out_strobe <= 0;
-    sample_out <= 0;
+    o_spectrum_out_stb <= 0;
+    o_spectrum_out <= 0;
 
     stage_X0 <= 0;
     stage_X1 <= 0;

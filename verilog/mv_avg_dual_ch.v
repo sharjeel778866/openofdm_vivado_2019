@@ -1,4 +1,36 @@
-// Xianjun jiao. putaoshu@msn.com; xianjun.jiao@imec.be;
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// Project Name: RA-Sentinel
+// 
+// Module Name: mv_avg_dual_ch
+//
+// Engineer: Tobias Weber
+// Target Devices: Artix 7, XC7A100T
+// Tool Versions: Vivado 2024.1
+// Description:
+// 
+// Fork of the openofdm project
+// https://github.com/jhshi/openofdm
+// 
+// Dependencies: 
+// 
+// Revision 1.00 - File Created
+// Project: https://github.com/Tobias-DG3YEV/RA-Sentinel
+// 
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2024 Tobias Weber
+// License: GNU GPL v3
+//
+// This project is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program. If not, see
+// <http://www.gnu.org/licenses/> for a copy.
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
 
 module mv_avg_dual_ch
 #(

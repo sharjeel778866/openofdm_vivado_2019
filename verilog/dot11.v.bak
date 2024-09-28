@@ -7,11 +7,13 @@
 `define DEBUG_PREFIX
 `endif
 
+`define USE_POWER_TRIGGER
+
 module dot11 (
-    input clock,
-    input enable,
-    input reset,
-    input reset_without_watchdog,
+    input i_clock,
+    input i_enable,
+    input i_reset,
+    input i_reset_without_watchdog,
 
     // setting registers
     //input set_stb,
@@ -19,19 +21,23 @@ module dot11 (
     //input [31:0] set_data,
     
     // add ports for register based inputs
-    input signed [10:0] power_thres,
-    input [31:0] min_plateau,
-    input threshold_scale,
+    input signed [10:0] i_power_thres,
+    input [31:0] i_min_plateau,
+    input i_threshold_scale,
+    input i_num_sample_changed,
+    input [31:0] i_reg_num_sample_to_skip,
+    input [15:0] i_reg_power_thres, //signal power threshold that asserts trigger
+    input [15:0] i_reg_window_size,
 
     // INPUT: RSSI
-    input signed [10:0] rssi_half_db,
+    input signed [10:0] i_rssi_half_db,
     // INPUT: I/Q sample
-    input [31:0] sample_in,
-    input sample_in_strobe,
-    input soft_decoding,
-    input wire force_ht_smoothing,
-    input wire disable_all_smoothing,
-    input [3:0] fft_win_shift, 
+    input [31:0] i_sample_in,
+    input i_sample_in_strobe,
+    input i_soft_decoding,
+    input wire i_force_ht_smoothing,
+    input wire i_disable_all_smoothing,
+    input [3:0] i_fft_win_shift, 
 
     // OUTPUT: bytes and FCS status
     output reg demod_is_ongoing,
@@ -138,8 +144,8 @@ assign n_bit_in_last_sym = n_bit_in_last_sym_tmp[9:0];
 
 // -------------- DEBUG for rx_stop_state4e012345-------------------------------
 `DEBUG_PREFIX reg  [14:0] timeout_counter;
-always @(posedge clock) begin
-  if ( (reset==1) || (~(state==S_DETECT_HT)) ) begin
+always @(posedge i_clock) begin
+  if ( (i_reset==1) || (~(state==S_DETECT_HT)) ) begin
     timeout_counter <= 0;
   end else begin
     timeout_counter <= ( (timeout_counter == 15'h7fff)? timeout_counter : (timeout_counter+1) );
@@ -154,8 +160,8 @@ end
 
 assign ofdm_symbol_eq_out_pulse = (equalizer_state==4 && equalizer_state_reg==8);
 
-always @(posedge clock) begin
-    if (reset_without_watchdog==1) begin
+always @(posedge i_clock) begin
+    if (i_reset_without_watchdog == 1) begin
         state_history <= 0;
         equalizer_state_reg <= 0;
     end else begin
@@ -179,11 +185,11 @@ wire [`ROTATE_LUT_LEN_SHIFT-1:0] eq_rot_addr;
 wire [31:0] eq_rot_data;
 
 rot_lut rot_lut_inst (
-    .clka(clock),
+    .clka(i_clock),
     .addra(sync_long_rot_addr),
     .douta(sync_long_rot_data),
 
-    .clkb(clock),
+    .clkb(i_clock),
     .addrb(eq_rot_addr),
     .doutb(eq_rot_data),
     .enb(1'b1)
@@ -222,9 +228,9 @@ assign eq_phase_out = phase_out;
 assign eq_phase_out_stb = phase_out_stb;
 
 phase phase_inst (
-    .clock(clock),
-    .reset(reset),
-    .enable(enable),
+    .clock(i_clock),
+    .reset(i_reset),
+    .enable(i_enable),
 
     .in_i(phase_in_i),
     .in_q(phase_in_q),
@@ -270,7 +276,9 @@ reg short_gi;
 
 reg [4:0] old_state;
 
-//assign power_trigger = (rssi_half_db>=power_thres? 1: 0);
+`ifndef USE_POWER_TRIGGER
+assign power_trigger = (rssi_half_db>=i_power_thres? 1: 0);
+`endif // USE_POWER_TRIGGER
 assign state_changed = state != old_state;
 
 // SIGNAL information
@@ -331,16 +339,16 @@ assign byte_reversed[7] = byte_out[0];
 
 reg [15:0] sync_long_out_count;
 
-
+`ifdef USE_POWER_TRIGGER
 power_trigger power_trigger_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset),
+    .clock(i_clock),
+    .enable(i_enable),
+    .reset(i_reset),
 
-    .sample_in(sample_in),
-    .sample_in_strobe(sample_in_strobe),
+    .sample_in(i_sample_in),
+    .sample_in_strobe(i_sample_in_strobe),
 
-    //.power_thres(power_thres),
+    //.i_power_thres(i_power_thres),
     //.window_size(window_size),
     //.num_sample_to_skip(num_sample_to_skip),
     //.num_sample_changed(num_sample_changed),
@@ -352,18 +360,18 @@ power_trigger power_trigger_inst (
     //.pw_state_spy(pw_state_spy),
     .trigger(power_trigger)
 );
-
+`endif // USE_POWER_TRIGGER
 
 sync_short sync_short_inst (
-    .clock(clock),
-    .reset(reset | sync_short_reset),
-    .enable(enable & sync_short_enable),
+    .clock(i_clock),
+    .reset(i_reset | sync_short_reset),
+    .enable(i_enable & sync_short_enable),
 
-    .min_plateau(min_plateau),
-    .threshold_scale(threshold_scale),
+    .min_plateau(i_min_plateau),
+    .threshold_scale(i_threshold_scale),
     
-    .sample_in(sample_in),
-    .sample_in_strobe(sample_in_strobe),
+    .sample_in(i_sample_in),
+    .sample_in_strobe(i_sample_in_strobe),
 
     .phase_in_i(sync_short_phase_in_i),
     .phase_in_q(sync_short_phase_in_q),
@@ -378,15 +386,15 @@ sync_short sync_short_inst (
 );
 
 sync_long sync_long_inst (
-    .clock(clock),
-    .reset(reset | sync_long_reset),
-    .enable(enable & sync_long_enable),
+    .clock(i_clock),
+    .reset(i_reset | sync_long_reset),
+    .enable(i_enable & sync_long_enable),
 
-    .sample_in(sample_in),
-    .sample_in_strobe(sample_in_strobe),
+    .sample_in(i_sample_in),
+    .sample_in_strobe(i_sample_in_strobe),
     .phase_offset(phase_offset),
     .short_gi(short_gi),
-    .fft_win_shift(fft_win_shift),
+    .fft_win_shift(i_fft_win_shift),
 
     .rot_addr(sync_long_rot_addr),
     .rot_data(sync_long_rot_data),
@@ -403,16 +411,16 @@ sync_long sync_long_inst (
 );
 
 equalizer equalizer_inst (
-    .clock(clock),
-    .reset(reset | equalizer_reset),
-    .enable(enable & equalizer_enable),
+    .clock(i_clock),
+    .reset(i_reset | equalizer_reset),
+    .enable(i_enable & equalizer_enable),
 
     .sample_in(sync_long_out),
     .sample_in_strobe(sync_long_out_strobe && !(state==S_HT_SIGNAL && num_ofdm_symbol==6)),
     .ht_next(ht_next),
     .pkt_ht(pkt_ht),
-    .ht_smoothing(ht_smoothing|force_ht_smoothing),
-    .disable_all_smoothing(disable_all_smoothing),
+    .ht_smoothing(ht_smoothing|i_force_ht_smoothing),
+    .disable_all_smoothing(i_disable_all_smoothing),
 
     .phase_in_i(eq_phase_in_i),
     .phase_in_q(eq_phase_in_q),
@@ -435,8 +443,8 @@ equalizer equalizer_inst (
 
 
 delayT #(.DATA_WIDTH(33), .DELAY(9)) eq_delay_inst (
-    .clock(clock),
-    .reset(reset),
+    .clock(i_clock),
+    .reset(i_reset),
 
     .data_in({equalizer_out_strobe, equalizer_out}),
     .data_out({eq_out_stb_delayed, eq_out_i_delayed, eq_out_q_delayed})
@@ -444,13 +452,13 @@ delayT #(.DATA_WIDTH(33), .DELAY(9)) eq_delay_inst (
 
 
 ofdm_decoder ofdm_decoder_inst (
-    .clock(clock),
-    .reset(reset|ofdm_reset),
-    .enable(enable & ofdm_enable),
+    .clock(i_clock),
+    .reset(i_reset|ofdm_reset),
+    .enable(i_enable & ofdm_enable),
 
     .sample_in({ofdm_in_i, ofdm_in_q}),
     .sample_in_strobe(ofdm_in_stb),
-    .soft_decoding(soft_decoding),
+    .soft_decoding(i_soft_decoding),
 
     .do_descramble(do_descramble),
     .num_bits_to_decode(num_bits_to_decode),
@@ -475,9 +483,9 @@ ofdm_decoder ofdm_decoder_inst (
 );
 
 ht_sig_crc crc_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset | crc_reset),
+    .clock(i_clock),
+    .enable(i_enable),
+    .reset(i_reset | crc_reset),
 
     .bit(crc_in),
     .input_strobe(crc_in_stb),
@@ -485,16 +493,16 @@ ht_sig_crc crc_inst (
 );
 
 crc32 fcs_inst (
-    .clk(clock),
-    .crc_en(enable & fcs_enable),
-    .rst(reset | fcs_reset),
+    .clk(i_clock),
+    .crc_en(i_enable & fcs_enable),
+    .rst(i_reset | fcs_reset),
     .data_in(byte_reversed),
     .crc_out(pkt_fcs)
 );
 
 phy_len_calculation phy_len_calculation_inst(
-    .clock(clock),
-    .reset(reset_without_watchdog | long_preamble_detected),
+    .clock(i_clock),
+    .reset(i_reset_without_watchdog | long_preamble_detected),
     .enable(),
 
     .state(state),
@@ -507,8 +515,8 @@ phy_len_calculation phy_len_calculation_inst(
     .phy_len_valid(phy_len_valid)
 );
 
-always @(posedge clock) begin
-    if (reset) begin
+always @(posedge i_clock) begin
+    if (i_reset) begin
         status_code <= E_OK;
         state <= S_WAIT_POWER_TRIGGER;
         old_state <= 0;
@@ -573,7 +581,7 @@ always @(posedge clock) begin
 
         fcs_out_strobe <= 0;
         fcs_ok <= 0;
-    end else if (enable) begin
+    end else if (i_enable) begin
         old_state <= state;
 
         case(state)
@@ -628,7 +636,7 @@ always @(posedge clock) begin
                     sync_long_reset <= 0;
                 end
 
-                if (sample_in_strobe) begin
+                if (i_sample_in_strobe) begin
                     sample_count <= sample_count + 1;
                 end
                 if (sample_count > 320) begin
@@ -893,7 +901,7 @@ always @(posedge clock) begin
                     state <= S_HT_SIG_ERROR;
                 end else begin
                     sync_long_out_count <= 0;
-                    // When decoding 80211n packets, a lower clock running platform (i.e. zedboard @ 100MHz) will spend more than 4usec to decode an entire OFDM symbol.
+                    // When decoding 80211n packets, a lower i_clock running platform (i.e. zedboard @ 100MHz) will spend more than 4usec to decode an entire OFDM symbol.
                     // This creates misalignment between the control state and the actual decoding process since a feedback mechanism is not applied.
                     // By the time the 1st OFDM DATA symbol is being decoded, the control is in HT-LTS state and the equalizer module mistakenly calculates the channel gain.
                     // A quick fix for this is to bypass the HT-STS symbol to re-establish the alignment. Afterall, HT-STS is not used in this module.
@@ -1031,7 +1039,7 @@ always @(posedge clock) begin
                                 mpdu_pad <= 1;
                         end
 
-                        // Enable CRC calculation on the first two bytes
+                        // i_enable CRC calculation on the first two bytes
                         if(crc_count[4] == 0) begin
                             crc_in <= byte_out[crc_count[2:0]];
                             crc_in_stb <= 1;
@@ -1041,7 +1049,7 @@ always @(posedge clock) begin
                         end
                     end
 
-                // Enable CRC calculation on the first two bytes
+                // i_enable CRC calculation on the first two bytes
                 end else if((^byte_count[1:0] == 1) && (|crc_count[2:0] == 1)) begin
                     crc_in <= byte_out[crc_count[2:0]];
                     crc_in_stb <= 1;

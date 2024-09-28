@@ -1,4 +1,37 @@
-// Xianjun jiao. putaoshu@msn.com; xianjun.jiao@imec.be;
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// Project Name: RA-Sentinel
+// 
+// Module Name: signal_watchdog
+//
+// Engineer: Tobias Weber
+// Target Devices: Artix 7, XC7A100T
+// Tool Versions: Vivado 2024.1
+// Description:
+// 
+// Fork of the openofdm project
+// https://github.com/jhshi/openofdm
+// 
+// Dependencies: 
+// 
+// Revision 1.00 - File Created
+// Project: https://github.com/Tobias-DG3YEV/RA-Sentinel
+// 
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2024 Tobias Weber
+// License: GNU GPL v3
+//
+// This project is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program. If not, see
+// <http://www.gnu.org/licenses/> for a copy.
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
+
 `include "openofdm_rx_pre_def.v"
 
 `ifdef OPENOFDM_RX_ENABLE_DBG
@@ -76,7 +109,7 @@ module signal_watchdog
     assign eq_out_i = i_equalizer[31:16];
     assign eq_out_q = i_equalizer[15:0];
 
-    assign equalizer_monitor_rst = ( (small_abs_eq_i_counter>=i_small_eq_out_counter_th) && (small_abs_eq_q_counter>=i_small_eq_out_counter_th) );
+    assign equalizer_monitor_rst = ( (small_abs_eq_i_counter >= i_small_eq_out_counter_th) && (small_abs_eq_q_counter >= i_small_eq_out_counter_th) );
 
     assign o_receiver_rst = ( i_power_trigger & ( equalizer_monitor_rst | receiver_rst_reg | (i_sig_valid && (i_signal_len<i_min_signal_len_th || i_signal_len>i_max_signal_len_th)) ) );
 
@@ -98,15 +131,16 @@ module signal_watchdog
     end
 
     running_sum_dual_ch #(.DATA_WIDTH0(2), .DATA_WIDTH1(2), .LOG2_SUM_LEN(LOG2_SUM_LEN)) signal_watchdog_running_sum_inst (
-      .clk(i_clk),
-      .rstn(i_rstn),
+      .i_clock(i_clk),
+      .i_nreset(i_rstn),
 
-      .data_in0(i_sign),
-      .data_in1(q_sign),
-      .data_in_valid(i_iq_valid),
-      .running_sum_result0(running_sum_result_i),
-      .running_sum_result1(running_sum_result_q),
-      .data_out_valid()
+      .i_data_in0(i_sign),
+      .i_data_in1(q_sign),
+      .i_data_in_valid(i_iq_valid),
+      
+      .o_running_sum_result0(running_sum_result_i),
+      .o_running_sum_result1(running_sum_result_q),
+      .o_data_out_valid()
     );
 
     // i_equalizer monitor

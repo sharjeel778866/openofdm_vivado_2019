@@ -1,35 +1,69 @@
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// Project Name: RA-Sentinel
+// 
+// Module Name: equalizer
+//
+// Engineer: Tobias Weber
+// Target Devices: Artix 7, XC7A100T
+// Tool Versions: Vivado 2024.1
+// Description:
+// 
+// Fork of the openofdm project
+// https://github.com/jhshi/openofdm
+// 
+// Dependencies: 
+// 
+// Revision 1.00 - File Created
+// Project: https://github.com/Tobias-DG3YEV/RA-Sentinel
+// 
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2024 Tobias Weber
+// License: GNU GPL v3
+//
+// This project is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program. If not, see
+// <http://www.gnu.org/licenses/> for a copy.
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
+
 `include "common_defs.v"
 
 module equalizer
 (
-    input clock,
-    input enable,
-    input reset,
+    input i_clock,
+    input i_enable,
+    input i_reset,
 
-    input [31:0] sample_in,
-    input sample_in_strobe,
-    input ht_next,
-    input pkt_ht,
-    input ht_smoothing,
-    input wire disable_all_smoothing,
+    input [31:0] i_sample_in,
+    input i_sample_in_strobe,
+    input i_ht_next,
+    input i_pkt_ht,
+    input i_ht_smoothing,
+    input i_disable_all_smoothing,
 
-    output [31:0] phase_in_i,
-    output [31:0] phase_in_q,
-    output reg phase_in_stb,
-    input [15:0] phase_out,
-    input phase_out_stb,
+    output [31:0] o_phase_in_i,
+    output [31:0] o_phase_in_q,
+    output reg o_phase_in_stb,
+    input [15:0] i_phase_out,
+    input i_phase_out_stb,
 
-    output [`ROTATE_LUT_LEN_SHIFT-1:0] rot_addr,
-    input [31:0] rot_data,
+    output [`ROTATE_LUT_LEN_SHIFT-1:0] o_rot_addr,
+    input [31:0] i_rot_data,
 
-    output reg [31:0] sample_out,
-    output reg sample_out_strobe,
+    output reg [31:0] o_sample_out,
+    output reg o_sample_out_strobe,
     
-    output reg [3:0] state,
+    output reg [3:0] o_state,
 
     // for side channel
-    output wire [31:0] csi,
-    output wire csi_valid
+    output [31:0] o_csi,
+    output o_csi_valid
 );
 
 // mask[0] is DC, mask[1:26] -> 1,..., 26
@@ -77,7 +111,7 @@ localparam S_ALL_SC_PE_CORRECTION = 8;
 localparam S_HT_LTS = 9;
 
 reg enable_delay;
-wire reset_internal = (enable==0 && enable_delay==1);//reset internal after the module is disabled in case the disable lock the state/stb to a non-end state.
+wire reset_internal = (i_enable==0 && enable_delay==1);//i_reset internal after the module is disabled in case the disable lock the o_state/stb to a non-end o_state.
 
 reg ht;
 reg [5:0] num_data_carrier;
@@ -149,8 +183,8 @@ reg signed [15:0] pilot_iq_phase[0:3];
 reg signed [31:0] pilot_sum_i;
 reg signed [31:0] pilot_sum_q;
 
-assign phase_in_i = pilot_i_reg;
-assign phase_in_q = pilot_q_reg;
+assign o_phase_in_i = pilot_i_reg;
+assign o_phase_in_q = pilot_q_reg;
 
 //reg signed [15:0] pilot_phase_err;
 reg signed [16:0] pilot_phase_err; // 15 --> 16 = 15 + 1, extended from cpe
@@ -210,11 +244,11 @@ reg lts_div_in_stb;
 reg prod_in_strobe;
 wire prod_out_strobe;
 
-wire [31:0] dividend_i = (state == S_SMOOTH_CH_DC || state == S_SMOOTH_CH_LTS) ? (lts_sum_i[18] == 0 ? {13'h0,lts_sum_i} : {13'h1FFF,lts_sum_i}) : (state == S_ALL_SC_PE_CORRECTION ? prod_i_scaled : 0);
-wire [31:0] dividend_q = (state == S_SMOOTH_CH_DC || state == S_SMOOTH_CH_LTS) ? (lts_sum_q[18] == 0 ? {13'h0,lts_sum_q} : {13'h1FFF,lts_sum_q}) : (state == S_ALL_SC_PE_CORRECTION ? prod_q_scaled : 0);
-wire [23:0] divisor_i = (state == S_SMOOTH_CH_DC || state == S_SMOOTH_CH_LTS) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
-wire [23:0] divisor_q = (state == S_SMOOTH_CH_DC || state == S_SMOOTH_CH_LTS) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
-wire div_in_stb = (state == S_SMOOTH_CH_DC || state == S_SMOOTH_CH_LTS) ? lts_div_in_stb : (state == S_ALL_SC_PE_CORRECTION ? prod_out_strobe : 0);
+wire [31:0] dividend_i = (o_state == S_SMOOTH_CH_DC || o_state == S_SMOOTH_CH_LTS) ? (lts_sum_i[18] == 0 ? {13'h0,lts_sum_i} : {13'h1FFF,lts_sum_i}) : (o_state == S_ALL_SC_PE_CORRECTION ? prod_i_scaled : 0);
+wire [31:0] dividend_q = (o_state == S_SMOOTH_CH_DC || o_state == S_SMOOTH_CH_LTS) ? (lts_sum_q[18] == 0 ? {13'h0,lts_sum_q} : {13'h1FFF,lts_sum_q}) : (o_state == S_ALL_SC_PE_CORRECTION ? prod_q_scaled : 0);
+wire [23:0] divisor_i = (o_state == S_SMOOTH_CH_DC || o_state == S_SMOOTH_CH_LTS) ? {21'b0,lts_mv_avg_len} : (o_state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
+wire [23:0] divisor_q = (o_state == S_SMOOTH_CH_DC || o_state == S_SMOOTH_CH_LTS) ? {21'b0,lts_mv_avg_len} : (o_state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
+wire div_in_stb = (o_state == S_SMOOTH_CH_DC || o_state == S_SMOOTH_CH_LTS) ? lts_div_in_stb : (o_state == S_ALL_SC_PE_CORRECTION ? prod_out_strobe : 0);
 
 reg [15:0] num_output;
 wire [31:0] quotient_i;
@@ -230,182 +264,186 @@ wire lts_div_out_stb = div_out_stb;
 
 // for side channel
 reg sample_in_strobe_dly;
-assign csi = {lts_i_out, lts_q_out};
-assign csi_valid = ( (num_ofdm_sym == 1 || (pkt_ht==1 && num_ofdm_sym==5)) && state == S_CPE_ESTIMATE && sample_in_strobe_dly == 1 && enable && (~reset) );
+assign o_csi = {lts_i_out, lts_q_out};
+assign o_csi_valid = ( (num_ofdm_sym == 1 || (i_pkt_ht == 1 && num_ofdm_sym == 5)) && o_state == S_CPE_ESTIMATE && sample_in_strobe_dly == 1 && i_enable && (~i_reset) );
 
-always @(posedge clock) begin
-    if (reset) begin
+always @(posedge i_clock) begin
+    if (i_reset) begin
         enable_delay <= 0;
     end else begin
-        enable_delay <= enable;
+        enable_delay <= i_enable;
     end
 end
 
 ram_2port #(.DWIDTH(32), .AWIDTH(6)) lts_inst (
-    .clka(clock),
-    .ena(1),
-    .wea(lts_in_stb),
-    .addra(lts_waddr),
-    .dia({lts_i_in, lts_q_in}),
-    .doa(),
-    .clkb(clock),
-    .enb(1),
-    .web(1'b0),
-    .addrb(lts_raddr[5:0]),
-    .dib(32'hFFFF),
-    .dob({lts_i_out, lts_q_out})
+    .i_clka(i_clock),
+    .i_ena(1),
+    .i_wea(lts_in_stb),
+    .i_addra(lts_waddr),
+    .i_dia({lts_i_in, lts_q_in}),
+    .o_doa(),
+    .i_clkb(i_clock),
+    .i_enb(1),
+    .i_web(1'b0),
+    .i_addrb(lts_raddr[5:0]),
+    .i_dib(32'hFFFF),
+    .o_dob({lts_i_out, lts_q_out})
 );
 
 calc_mean lts_i_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
     
-    .a(lts_i_out),
-    .b(input_i),
-    .sign(current_sign),
-    .input_strobe(calc_mean_strobe),
+    .i_a(lts_i_out),
+    .i_b(input_i),
+    .i_sign(current_sign),
+    .i_input_strobe(calc_mean_strobe),
 
-    .c(new_lts_i),
-    .output_strobe(new_lts_stb)
+    .o_c(new_lts_i),
+    .o_output_strobe(new_lts_stb)
 );
 
 calc_mean lts_q_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
     
-    .a(lts_q_out),
-    .b(input_q),
-    .sign(current_sign),
-    .input_strobe(calc_mean_strobe),
+    .i_a(lts_q_out),
+    .i_b(input_q),
+    .i_sign(current_sign),
+    .i_input_strobe(calc_mean_strobe),
 
-    .c(new_lts_q)
+    .o_c(new_lts_q),
+    .o_output_strobe()
 );
 
 ram_2port  #(.DWIDTH(32), .AWIDTH(6)) in_buf_inst (
-    .clka(clock),
-    .ena(1),
-    .wea(sample_in_strobe),
-    .addra(in_waddr),
-    .dia(sample_in),
-    .doa(),
-    .clkb(clock),
-    .enb(1),
-    .web(1'b0),
-    .addrb(in_raddr[5:0]),
-    .dib(32'hFFFF),
-    .dob({buf_i_out, buf_q_out})
+    .i_clka(i_clock),
+    .i_ena(1),
+    .i_wea(i_sample_in_strobe),
+    .i_addra(in_waddr),
+    .i_dia(i_sample_in),
+    .o_doa(),
+    .i_clkb(i_clock),
+    .i_enb(1),
+    .i_web(1'b0),
+    .i_addrb(in_raddr[5:0]),
+    .i_dib(32'hFFFF),
+    .o_dob({buf_i_out, buf_q_out})
 );
 
 wire pilot_out_stb;
 
 complex_mult pilot_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
-    .a_i(input_i),
-    .a_q(input_q),
-    .b_i(lts_i_out),
-    .b_q(lts_q_out),
-    .input_strobe(pilot_in_stb),
-    .p_i(pilot_i),
-    .p_q(pilot_q),
-    .output_strobe(pilot_out_stb)
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
+    .i_a_i(input_i),
+    .i_a_q(input_q),
+    .i_b_i(lts_i_out),
+    .i_b_q(lts_q_out),
+    .i_input_strobe(pilot_in_stb),
+    .o_p_i(pilot_i),
+    .o_p_q(pilot_q),
+    .o_output_strobe(pilot_out_stb)
 );
 
 wire rot_out_stb;
 
 rotate rotate_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
 
-    .in_i(buf_i_out),
-    .in_q(buf_q_out),
+    .i_in_i(buf_i_out),
+    .i_in_q(buf_q_out),
     // .phase(sym_phase),
-    .phase(sym_phase[15:0]),//only taking [15:0] to rotate could have overflow!
-    .input_strobe(rot_in_stb),
+    .i_phase(sym_phase[15:0]),//only taking [15:0] to rotate could have overflow!
+    .i_input_strobe(rot_in_stb),
 
-    .rot_addr(rot_addr),
-    .rot_data(rot_data),
+    .o_rot_addr(o_rot_addr),
+    .i_rot_data(i_rot_data),
     
-    .out_i(rot_i),
-    .out_q(rot_q),
-    .output_strobe(rot_out_stb)
+    .o_out_i(rot_i),
+    .o_out_q(rot_q),
+    .o_output_strobe(rot_out_stb)
 );
 
 complex_mult input_lts_prod_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
-    .a_i(rot_i),
-    .a_q(rot_q),
-    .b_i(lts_i_out),
-    .b_q(lts_q_out_neg),
-    .input_strobe(rot_out_stb),
-    .p_i(prod_i),
-    .p_q(prod_q),
-    .output_strobe(prod_out_strobe)
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
+    .i_a_i(rot_i),
+    .i_a_q(rot_q),
+    .i_b_i(lts_i_out),
+    .i_b_q(lts_q_out_neg),
+    .i_input_strobe(rot_out_stb),
+    .o_p_i(prod_i),
+    .o_p_q(prod_q),
+    .o_output_strobe(prod_out_strobe)
 );
 
 complex_mult lts_lts_prod_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
-    .a_i(lts_i_out),
-    .a_q(lts_q_out),
-    .b_i(lts_i_out),
-    .b_q(lts_q_out_neg),
-    .input_strobe(rot_out_stb),
-    .p_i(mag_sq)
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
+    .i_a_i(lts_i_out),
+    .i_a_q(lts_q_out),
+    .i_b_i(lts_i_out),
+    .i_b_q(lts_q_out_neg),
+    .i_input_strobe(rot_out_stb),
+    .o_p_i(mag_sq),
+    .o_p_q(),
+    .o_output_strobe()
 );
 
 divider norm_i_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
 
-    .dividend(dividend_i),
-    .divisor(divisor_i),
-    .input_strobe(div_in_stb),
+    .i_dividend(dividend_i),
+    .i_divisor(divisor_i),
+    .i_input_strobe(div_in_stb),
 
-    .quotient(quotient_i),
-    .output_strobe(div_out_stb)
+    .o_quotient(quotient_i),
+    .o_output_strobe(div_out_stb)
 );
 
 divider norm_q_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
 
-    .dividend(dividend_q),
-    .divisor(divisor_q),
-    .input_strobe(div_in_stb),
+    .i_dividend(dividend_q),
+    .i_divisor(divisor_q),
+    .i_input_strobe(div_in_stb),
 
-    .quotient(quotient_q)
+    .o_quotient(quotient_q),
+    .o_output_strobe()
 );
 
 // LVPE calculation to estimate SFO
 divider lvpe_inst (
-    .clock(clock),
-    .enable(enable),
-    .reset(reset|reset_internal),
+    .i_clock(i_clock),
+    .i_enable(i_enable),
+    .i_reset(i_reset|reset_internal),
 
-    .dividend(lvpe_dividend),
-    .divisor(lvpe_divisor),
-    .input_strobe(lvpe_in_stb),
+    .i_dividend(lvpe_dividend),
+    .i_divisor(lvpe_divisor),
+    .i_input_strobe(lvpe_in_stb),
 
-    .quotient(lvpe),
-    .output_strobe(lvpe_out_stb)
+    .o_quotient(lvpe),
+    .o_output_strobe(lvpe_out_stb)
 );
 
-always @(posedge clock) begin
-    if (reset|reset_internal) begin
-        sample_out_strobe <= 0;
+always @(posedge i_clock) begin
+    if (i_reset|reset_internal) begin
+        o_sample_out_strobe <= 0;
         lts_raddr <= 0;
         lts_waddr <= 0;
-        sample_out <= 0;
+        o_sample_out <= 0;
 
         lts_in_stb <= 0;
         lts_i_in <= 0;
@@ -441,7 +479,7 @@ always @(posedge clock) begin
         lts_mv_avg_len <= 0;
         lts_div_in_stb <= 0;
 
-        phase_in_stb <= 0;
+        o_phase_in_stb <= 0;
         pilot_sum_i <= 0;
         pilot_sum_q <= 0;
         pilot_phase_err <= 0;
@@ -468,20 +506,20 @@ always @(posedge clock) begin
 
         num_output <= 0;
 
-        state <= S_FIRST_LTS;
-    end else if (enable) begin
-        sample_in_strobe_dly <= sample_in_strobe;
-        case(state)
+        o_state <= S_FIRST_LTS;
+    end else if (i_enable) begin
+        sample_in_strobe_dly <= i_sample_in_strobe;
+        case(o_state)
             S_FIRST_LTS: begin
                 // store first LTS as is
-                lts_in_stb <= sample_in_strobe;
-                {lts_i_in, lts_q_in} <= sample_in;
+                lts_in_stb <= i_sample_in_strobe;
+                {lts_i_in, lts_q_in} <= i_sample_in;
 
                 if (lts_in_stb) begin
                     if (lts_waddr == 63) begin
                         lts_waddr <= 0;
                         lts_raddr <= 0;
-                        state <= S_SECOND_LTS;
+                        o_state <= S_SECOND_LTS;
                     end else begin
                         lts_waddr <= lts_waddr + 1;
                     end
@@ -490,9 +528,9 @@ always @(posedge clock) begin
 
             S_SECOND_LTS: begin
                 // calculate and store the mean of the two LTS
-                if (sample_in_strobe) begin
-                    calc_mean_strobe <= sample_in_strobe;
-                    {input_i, input_q} <= sample_in;
+                if (i_sample_in_strobe) begin
+                    calc_mean_strobe <= i_sample_in_strobe;
+                    {input_i, input_q} <= i_sample_in;
                     current_sign <= lts_ref[0];
                     lts_ref <= {lts_ref[0], lts_ref[63:1]};
                     lts_raddr <= lts_raddr + 1;
@@ -509,7 +547,7 @@ always @(posedge clock) begin
                         lts_raddr <= 62;
                         lts_in_stb <= 0;
                         lts_div_in_stb <= 0;
-                        state <= (disable_all_smoothing?S_GET_POLARITY:S_SMOOTH_CH_DC);
+                        o_state <= (i_disable_all_smoothing?S_GET_POLARITY:S_SMOOTH_CH_DC);
                     end else begin
                         lts_waddr <= lts_waddr + 1;
                     end
@@ -537,7 +575,7 @@ always @(posedge clock) begin
                         lts_waddr <= 37;
                         lts_raddr <= 38;
                         lts_in_stb <= 0;
-                        state <= S_SMOOTH_CH_LTS;
+                        o_state <= S_SMOOTH_CH_LTS;
                     end else if(lts_div_out_stb == 1) begin
                         lts_i_in <= lts_div_i[15:0];
                         lts_q_in <= lts_div_q[15:0];
@@ -594,7 +632,7 @@ always @(posedge clock) begin
                 lts_in_stb <= lts_div_out_stb;
 
                 if(lts_waddr == 26) begin
-                    state <= S_GET_POLARITY;
+                    o_state <= S_GET_POLARITY;
                 end
             end
 
@@ -629,11 +667,11 @@ always @(posedge clock) begin
                 input_q <= 0;
                 lts_raddr <= 0;
                 num_ofdm_sym <= num_ofdm_sym + 1;
-                state <= S_CPE_ESTIMATE;
+                o_state <= S_CPE_ESTIMATE;
             end
 
             S_CPE_ESTIMATE: begin
-                if (~ht & ht_next) begin
+                if (~ht & i_ht_next) begin
                     ht <= 1;
                     num_data_carrier <= 52;
                     lts_waddr <= 0;
@@ -643,11 +681,11 @@ always @(posedge clock) begin
                     pilot_mask <= PILOT_MASK;
                     // reverse this extra shift
                     polarity <= {polarity[125:0], polarity[126]};
-                    state <= S_HT_LTS;
+                    o_state <= S_HT_LTS;
                 end
 
                 // calculate residue freq offset using pilot sub carriers
-                if (sample_in_strobe) begin
+                if (i_sample_in_strobe) begin
                     in_waddr <= in_waddr + 1;
                     lts_raddr <= lts_raddr + 1;
 
@@ -656,11 +694,11 @@ always @(posedge clock) begin
                         pilot_count1 <= pilot_count1 + 1;
                         // obtain the conjugate of current pilot sub carrier
                         if (current_polarity[pilot_count1] == 0) begin
-                            input_i <= sample_in[31:16];
-                            input_q <= ~sample_in[15:0] + 1;
+                            input_i <= i_sample_in[31:16];
+                            input_q <= ~i_sample_in[15:0] + 1;
                         end else begin
-                            input_i <= ~sample_in[31:16] + 1;
-                            input_q <= sample_in[15:0];
+                            input_i <= ~i_sample_in[31:16] + 1;
+                            input_q <= i_sample_in[15:0];
                         end
                         pilot_in_stb <= 1;
                     end else begin
@@ -677,14 +715,14 @@ always @(posedge clock) begin
                 end else if (pilot_count2 == 4) begin
                     pilot_i_reg <= pilot_sum_i;
                     pilot_q_reg <= pilot_sum_q; 
-                    phase_in_stb <= 1;
+                    o_phase_in_stb <= 1;
                     pilot_count2 <= 0; 
                 end else begin
-                    phase_in_stb <= 0; 
+                    o_phase_in_stb <= 0; 
                 end
 
-                if (phase_out_stb) begin
-                    cpe <= phase_out; 
+                if (i_phase_out_stb) begin
+                    cpe <= i_phase_out; 
                     pilot_count1 <= 0; 
                     pilot_count2 <= 0;
                     pilot_count3 <= 0; 
@@ -692,7 +730,7 @@ always @(posedge clock) begin
                     in_raddr <= pilot_loc[0][5:0];  // sample in location, compensate for RAM read delay
                     lts_raddr <= pilot_loc[0][5:0]; // LTS location, compensate for RAM read delay
                     peg_pilot_scale <= pilot_idx[0]*prev_peg;
-                    state <= S_PILOT_PE_CORRECTION;
+                    o_state <= S_PILOT_PE_CORRECTION;
                 end
             end
 
@@ -731,22 +769,22 @@ always @(posedge clock) begin
                 if (pilot_out_stb) begin
                     pilot_i_reg <= pilot_i;
                     pilot_q_reg <= pilot_q;
-                    phase_in_stb <= 1;
+                    o_phase_in_stb <= 1;
                 end else begin
-                    phase_in_stb <= 0; 
+                    o_phase_in_stb <= 0; 
                 end
 
-                if (phase_out_stb && pilot_count3 < 4) begin
+                if (i_phase_out_stb && pilot_count3 < 4) begin
                     pilot_count3 <= pilot_count3 + 1; 
-                    pilot_iq_phase[pilot_count3] <= phase_out;
+                    pilot_iq_phase[pilot_count3] <= i_phase_out;
                 end
 
                 if (pilot_count3 == 4) begin
-                    phase_in_stb <= 0; 
+                    o_phase_in_stb <= 0; 
                     pilot_count1 <= 0; 
                     pilot_count2 <= 0; 
                     pilot_count3 <= 0; 
-                    state <= S_LVPE_ESTIMATE; 
+                    o_state <= S_LVPE_ESTIMATE; 
                 end
             end
 
@@ -781,7 +819,7 @@ always @(posedge clock) begin
                     lts_raddr <= 1;
                     rot_in_stb <= 0;
                     num_output <= 0;
-                    state <= S_ALL_SC_PE_CORRECTION;
+                    o_state <= S_ALL_SC_PE_CORRECTION;
                 end
                 // Sx² = ∑(x-x̄)*(x-x̄) = ∑x² = (7² + 21² + (-21)² + (-7)²) = 980
                 // phase error gradient (PEG) = Sxy/Sx²
@@ -817,32 +855,32 @@ always @(posedge clock) begin
                     data_subcarrier_mask <= {data_subcarrier_mask[0],
                         data_subcarrier_mask[63:1]};
                     if (data_subcarrier_mask[0]) begin
-                        sample_out_strobe <= 1;
-                        sample_out <= {norm_i[31], norm_i[14:0],
+                        o_sample_out_strobe <= 1;
+                        o_sample_out <= {norm_i[31], norm_i[14:0],
                             norm_q[31], norm_q[14:0]};
                         num_output <= num_output + 1;
                     end else begin
-                        sample_out_strobe <= 0;
+                        o_sample_out_strobe <= 0;
                     end
                 end else begin
-                    sample_out_strobe <= 0;
+                    o_sample_out_strobe <= 0;
                 end
 
                 if (num_output == num_data_carrier) begin
                     prev_peg <= prev_peg_reg; 
-                    state <= S_GET_POLARITY;
+                    o_state <= S_GET_POLARITY;
                 end
             end
 
             S_HT_LTS: begin
-                if (sample_in_strobe) begin
+                if (i_sample_in_strobe) begin
                     lts_in_stb <= 1;
                     ht_lts_ref <= {ht_lts_ref[0], ht_lts_ref[63:1]};
                     if (ht_lts_ref[0] == 0) begin
-                        {lts_i_in, lts_q_in} <= sample_in;
+                        {lts_i_in, lts_q_in} <= i_sample_in;
                     end else begin
-                        lts_i_in <= ~sample_in[31:16]+1;
-                        lts_q_in <= ~sample_in[15:0]+1;
+                        lts_i_in <= ~i_sample_in[31:16]+1;
+                        lts_q_in <= ~i_sample_in[15:0]+1;
                     end
                 end else begin
                     lts_in_stb <= 0;
@@ -855,10 +893,10 @@ always @(posedge clock) begin
                         lts_in_stb <= 0;
                         lts_div_in_stb <= 0;
                         // Depending on smoothing bit in HT-SIG, smooth the channel
-                        if(ht_smoothing==1 && disable_all_smoothing==0) begin
-                            state <= S_SMOOTH_CH_DC;
+                        if(i_ht_smoothing==1 && i_disable_all_smoothing==0) begin
+                            o_state <= S_SMOOTH_CH_DC;
                         end else begin
-                            state <= S_GET_POLARITY;
+                            o_state <= S_GET_POLARITY;
                         end
                     end else begin
                         lts_waddr <= lts_waddr + 1;
@@ -868,11 +906,11 @@ always @(posedge clock) begin
             end
 
             default: begin
-                state <= S_FIRST_LTS;
+                o_state <= S_FIRST_LTS;
             end
         endcase
     end else begin
-        sample_out_strobe <= 0;
+        o_sample_out_strobe <= 0;
     end
 end
 

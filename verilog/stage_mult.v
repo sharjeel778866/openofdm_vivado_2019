@@ -1,8 +1,42 @@
+//////////////////////////////////////////////////////////////////////////////////
+// 
+// Project Name: RA-Sentinel
+// 
+// Module Name: stage_mult
+//
+// Engineer: Tobias Weber
+// Target Devices: Artix 7, XC7A100T
+// Tool Versions: Vivado 2024.1
+// Description:
+// 
+// Fork of the openofdm project
+// https://github.com/jhshi/openofdm
+// 
+// Dependencies: 
+// 
+// Revision 1.00 - File Created
+// Project: https://github.com/Tobias-DG3YEV/RA-Sentinel
+// 
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2024 Tobias Weber
+// License: GNU GPL v3
+//
+// This project is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program. If not, see
+// <http://www.gnu.org/licenses/> for a copy.
+//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 1ps
+
 module stage_mult
 (
-    input clock,
-    input enable,
-    input reset,
+    input i_clock,
+    input i_enable,
+    input i_reset,
 
     input signed [31:0] X0,
     input signed [31:0] X1,
@@ -80,7 +114,7 @@ wire signed [31:0] prod_7_i;
 wire signed [31:0] prod_7_q;
 
 complex_multiplier mult_inst1 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X0_i,X0_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -90,7 +124,7 @@ complex_multiplier mult_inst1 (
 );
 
 complex_multiplier mult_inst2 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X1_i,X1_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -100,7 +134,7 @@ complex_multiplier mult_inst2 (
 );
 
 complex_multiplier mult_inst3 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X2_i,X2_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -110,7 +144,7 @@ complex_multiplier mult_inst3 (
 );
 
 complex_multiplier mult_inst4 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X3_i,X3_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -120,7 +154,7 @@ complex_multiplier mult_inst4 (
 );
 
 complex_multiplier mult_inst5 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X4_i,X4_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -130,7 +164,7 @@ complex_multiplier mult_inst5 (
 );
 
 complex_multiplier mult_inst6 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X5_i,X5_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -140,7 +174,7 @@ complex_multiplier mult_inst6 (
 );
 
 complex_multiplier mult_inst7 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X6_i,X6_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -150,7 +184,7 @@ complex_multiplier mult_inst7 (
 );
 
 complex_multiplier mult_inst8 (
-  .aclk(clock),
+  .aclk(i_clock),
   .s_axis_a_tvalid(input_strobe),
   .s_axis_a_tdata({X7_i,X7_q}),
   .s_axis_b_tvalid(input_strobe),
@@ -169,15 +203,15 @@ reg signed [31:0] sum_q3;
 reg signed [31:0] sum_q4;
 
 delayT #(.DATA_WIDTH(1), .DELAY(5)) sum_delay_inst (
-    .clock(clock),
-    .reset(reset),
+    .i_clock(i_clock),
+    .i_reset(i_reset),
 
-    .data_in(input_strobe),
-    .data_out(output_strobe)
+    .i_data_in(input_strobe),
+    .o_data_out(output_strobe)
 );
 
-always @(posedge clock) begin
-    if (reset) begin
+always @(posedge i_clock) begin
+    if (i_reset) begin
         sum <= 0;
         sum_i1 <= 0;
         sum_i2 <= 0;
@@ -187,7 +221,7 @@ always @(posedge clock) begin
         sum_q2 <= 0;
         sum_q3 <= 0;
         sum_q4 <= 0;
-    end else if (enable) begin
+    end else if (i_enable) begin
         sum_i1 <= prod_0_i + prod_1_i;
         sum_i2 <= prod_2_i + prod_3_i;
         sum_i3 <= prod_4_i + prod_5_i;

@@ -3,7 +3,12 @@ OpenOFDM - Fork for RA-Sentinel
 
 This project contains a Verilog implementation of 802.11 OFDM PHY decoder
 based on the source code of the original openOFDM by Jinghao Shi.
-https://github.com/open-sdr/openofdm
+https://github.com/open-sdr/openofdm. The modification in this fork
+have the following intentions:
+
+ - Increase code readability
+ - Add phase deviation output (deviation between or mastertlock and the signal received over the air)
+ - Replace the proprietary end most importantly the limited evaluation IPs with oprn source alternatives.
 
 Features are:
 

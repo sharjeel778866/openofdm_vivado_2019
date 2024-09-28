@@ -67,6 +67,7 @@ always @(posedge i_clock, posedge i_reset) begin
         lfsr_q <= {32{1'b1}};
     end
     else begin
+
         lfsr_q <= i_crc_en ? lfsr_c : lfsr_q;
     end
 end // always
