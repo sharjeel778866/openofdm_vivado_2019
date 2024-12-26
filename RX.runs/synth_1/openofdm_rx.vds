@@ -1,0 +1,508 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Dec 26 09:20:36 2024
+# Process ID: 12716
+# Current directory: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1
+# Command line: vivado.exe -log openofdm_rx.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source openofdm_rx.tcl
+# Log file: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1/openofdm_rx.vds
+# Journal file: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source openofdm_rx.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository 'c:/Users/sharjeel/Desktop/openofdm-master/openofdm-master/verilog/coregen/div_gen_new_ip_core_zynq'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Installed/Xilinx/Vivado/2019.1/data/ip'.
+Command: synth_design -top openofdm_rx -part xc7z020clg484-1
+Starting synth_design
+WARNING: [Vivado_Tcl 4-393] The 'Synthesis' target of the following IPs are stale, please generate the output products using the generate_target or synth_ip command before running synth_design.
+C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/coregen/viterbi_v7_0.xco
+C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/coregen/deinter_lut.xco
+C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/coregen/complex_multiplier.xco
+C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/coregen/atan_lut.xco
+
+INFO: [IP_Flow 19-2162] IP 'viterbi_v7_0' is locked:
+* IP 'viterbi_v7_0' shares a common output directory with other IP. It is recommended that each IP be placed in its own directory. * IP definition 'Viterbi Decoder (7.0)' for IP 'viterbi_v7_0' has a newer major version in the IP Catalog. * Current project part 'xc7z020clg484-1' and the part 'xc3sd3400afg676-5' used to customize the IP 'viterbi_v7_0' do not match.
+INFO: [IP_Flow 19-2162] IP 'deinter_lut' is locked:
+* IP 'deinter_lut' shares a common output directory with other IP. It is recommended that each IP be placed in its own directory. * IP definition 'Block Memory Generator (4.2)' for IP 'deinter_lut' has a newer major version in the IP Catalog. * Current project part 'xc7z020clg484-1' and the part 'xc3sd3400afg676-5' used to customize the IP 'deinter_lut' do not match.
+INFO: [IP_Flow 19-2162] IP 'complex_multiplier' is locked:
+* IP 'complex_multiplier' shares a common output directory with other IP. It is recommended that each IP be placed in its own directory. * IP definition 'Complex Multiplier (3.1)' for IP 'complex_multiplier' has a newer major version in the IP Catalog. * Current project part 'xc7z020clg484-1' and the part 'xc3sd3400afg676-5' used to customize the IP 'complex_multiplier' do not match.
+INFO: [IP_Flow 19-2162] IP 'atan_lut' is locked:
+* IP 'atan_lut' shares a common output directory with other IP. It is recommended that each IP be placed in its own directory. * IP definition 'Block Memory Generator (4.2)' for IP 'atan_lut' has a newer major version in the IP Catalog. * Current project part 'xc7z020clg484-1' and the part 'xc3sd3400afg676-5' used to customize the IP 'atan_lut' do not match.
+INFO: [IP_Flow 19-2162] IP 'rot_lut' is locked:
+* IP 'rot_lut' shares a common output directory with other IP. It is recommended that each IP be placed in its own directory. * IP definition 'Block Memory Generator (4.2)' for IP 'rot_lut' has a newer major version in the IP Catalog. * Current project part 'xc7z020clg484-1' and the part 'xc3sd3400afg676-5' used to customize the IP 'rot_lut' do not match.
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 10224 
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:6]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:7]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:8]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:9]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:10]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:16]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:17]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:19]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:20]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:21]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:24]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:29]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:30]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:31]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:32]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:33]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:34]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:35]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:36]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:37]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:38]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:39]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:40]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:41]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:42]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:43]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:44]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:45]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:52]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:55]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:56]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:57]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:58]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:61]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:62]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:63]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:64]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:65]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:66]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:67]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:68]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:69]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:70]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:71]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:74]
+WARNING: [Synth 8-2644] root scope declaration is not allowed in verilog 95/2K mode [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/common_params.v:77]
+WARNING: [Synth 8-1102] /* in comment [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/openofdm_rx.v:325]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 845.035 ; gain = 186.855
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'openofdm_rx' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/openofdm_rx.v:13]
+	Parameter IQ_DATA_WIDTH bound to: 16 - type: integer 
+	Parameter RSSI_HALF_DB_WIDTH bound to: 11 - type: integer 
+	Parameter C_S00_AXI_DATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_S00_AXI_ADDR_WIDTH bound to: 7 - type: integer 
+	Parameter PI bound to: 1608 - type: integer 
+	Parameter DOUBLE_PI bound to: 3216 - type: integer 
+	Parameter PI_2 bound to: 804 - type: integer 
+	Parameter PI_4 bound to: 402 - type: integer 
+	Parameter PI_3_4 bound to: 1206 - type: integer 
+	Parameter SPI_REG_REGISTER_WIDTH bound to: 32 - type: integer 
+	Parameter SPI_REG_ADDRESS_WIDTH bound to: 7 - type: integer 
+	Parameter CR_POWER_THRES bound to: 3 - type: integer 
+	Parameter CR_POWER_WINDOW bound to: 4 - type: integer 
+	Parameter CR_SKIP_SAMPLE bound to: 5 - type: integer 
+	Parameter CR_MIN_PLATEAU bound to: 6 - type: integer 
+	Parameter S_WAIT_POWER_TRIGGER bound to: 0 - type: integer 
+	Parameter S_SYNC_SHORT bound to: 1 - type: integer 
+	Parameter S_SYNC_LONG bound to: 2 - type: integer 
+	Parameter S_DECODE_SIGNAL bound to: 3 - type: integer 
+	Parameter S_CHECK_SIGNAL bound to: 4 - type: integer 
+	Parameter S_DETECT_HT bound to: 5 - type: integer 
+	Parameter S_HT_SIGNAL bound to: 6 - type: integer 
+	Parameter S_CHECK_HT_SIG_CRC bound to: 7 - type: integer 
+	Parameter S_CHECK_HT_SIG bound to: 8 - type: integer 
+	Parameter S_HT_STS bound to: 9 - type: integer 
+	Parameter S_HT_LTS bound to: 10 - type: integer 
+	Parameter S_MPDU_DELIM bound to: 11 - type: integer 
+	Parameter S_DECODE_DATA bound to: 12 - type: integer 
+	Parameter S_MPDU_PAD bound to: 13 - type: integer 
+	Parameter S_SIGNAL_ERROR bound to: 14 - type: integer 
+	Parameter S_HT_SIG_ERROR bound to: 16 - type: integer 
+	Parameter S_DECODE_DONE bound to: 15 - type: integer 
+	Parameter E_OK bound to: 0 - type: integer 
+	Parameter E_PARITY_FAIL bound to: 1 - type: integer 
+	Parameter E_UNSUPPORTED_RATE bound to: 2 - type: integer 
+	Parameter E_WRONG_RSVD bound to: 3 - type: integer 
+	Parameter E_WRONG_TAIL bound to: 4 - type: integer 
+	Parameter E_UNSUPPORTED_MCS bound to: 8 - type: integer 
+	Parameter E_UNSUPPORTED_CBW bound to: 9 - type: integer 
+	Parameter E_HT_WRONG_RSVD bound to: 10 - type: integer 
+	Parameter E_UNSUPPORTED_STBC bound to: 11 - type: integer 
+	Parameter E_UNSUPPORTED_FEC bound to: 12 - type: integer 
+	Parameter E_UNSUPPORTED_SGI bound to: 13 - type: integer 
+	Parameter E_UNSUPPORTED_SPATIAL bound to: 14 - type: integer 
+	Parameter E_HT_WRONG_TAIL bound to: 15 - type: integer 
+	Parameter E_HT_AMPDU_WARN bound to: 16 - type: integer 
+	Parameter E_HT_AMPDU_ERROR bound to: 17 - type: integer 
+	Parameter E_WRONG_CRC bound to: 18 - type: integer 
+	Parameter E_WRONG_FCS bound to: 31 - type: integer 
+	Parameter EXPECTED_FCS bound to: -955982469 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'signal_watchdog' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/signal_watchdog.v:43]
+	Parameter IQ_DATA_WIDTH bound to: 16 - type: integer 
+	Parameter LOG2_SUM_LEN bound to: 6 - type: integer 
+	Parameter PI bound to: 1608 - type: integer 
+	Parameter DOUBLE_PI bound to: 3216 - type: integer 
+	Parameter PI_2 bound to: 804 - type: integer 
+	Parameter PI_4 bound to: 402 - type: integer 
+	Parameter PI_3_4 bound to: 1206 - type: integer 
+	Parameter SPI_REG_REGISTER_WIDTH bound to: 32 - type: integer 
+	Parameter SPI_REG_ADDRESS_WIDTH bound to: 7 - type: integer 
+	Parameter CR_POWER_THRES bound to: 3 - type: integer 
+	Parameter CR_POWER_WINDOW bound to: 4 - type: integer 
+	Parameter CR_SKIP_SAMPLE bound to: 5 - type: integer 
+	Parameter CR_MIN_PLATEAU bound to: 6 - type: integer 
+	Parameter S_WAIT_POWER_TRIGGER bound to: 0 - type: integer 
+	Parameter S_SYNC_SHORT bound to: 1 - type: integer 
+	Parameter S_SYNC_LONG bound to: 2 - type: integer 
+	Parameter S_DECODE_SIGNAL bound to: 3 - type: integer 
+	Parameter S_CHECK_SIGNAL bound to: 4 - type: integer 
+	Parameter S_DETECT_HT bound to: 5 - type: integer 
+	Parameter S_HT_SIGNAL bound to: 6 - type: integer 
+	Parameter S_CHECK_HT_SIG_CRC bound to: 7 - type: integer 
+	Parameter S_CHECK_HT_SIG bound to: 8 - type: integer 
+	Parameter S_HT_STS bound to: 9 - type: integer 
+	Parameter S_HT_LTS bound to: 10 - type: integer 
+	Parameter S_MPDU_DELIM bound to: 11 - type: integer 
+	Parameter S_DECODE_DATA bound to: 12 - type: integer 
+	Parameter S_MPDU_PAD bound to: 13 - type: integer 
+	Parameter S_SIGNAL_ERROR bound to: 14 - type: integer 
+	Parameter S_HT_SIG_ERROR bound to: 16 - type: integer 
+	Parameter S_DECODE_DONE bound to: 15 - type: integer 
+	Parameter E_OK bound to: 0 - type: integer 
+	Parameter E_PARITY_FAIL bound to: 1 - type: integer 
+	Parameter E_UNSUPPORTED_RATE bound to: 2 - type: integer 
+	Parameter E_WRONG_RSVD bound to: 3 - type: integer 
+	Parameter E_WRONG_TAIL bound to: 4 - type: integer 
+	Parameter E_UNSUPPORTED_MCS bound to: 8 - type: integer 
+	Parameter E_UNSUPPORTED_CBW bound to: 9 - type: integer 
+	Parameter E_HT_WRONG_RSVD bound to: 10 - type: integer 
+	Parameter E_UNSUPPORTED_STBC bound to: 11 - type: integer 
+	Parameter E_UNSUPPORTED_FEC bound to: 12 - type: integer 
+	Parameter E_UNSUPPORTED_SGI bound to: 13 - type: integer 
+	Parameter E_UNSUPPORTED_SPATIAL bound to: 14 - type: integer 
+	Parameter E_HT_WRONG_TAIL bound to: 15 - type: integer 
+	Parameter E_HT_AMPDU_WARN bound to: 16 - type: integer 
+	Parameter E_HT_AMPDU_ERROR bound to: 17 - type: integer 
+	Parameter E_WRONG_CRC bound to: 18 - type: integer 
+	Parameter E_WRONG_FCS bound to: 31 - type: integer 
+	Parameter EXPECTED_FCS bound to: -955982469 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'running_sum_dual_ch' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/running_sum_dual_ch.v:35]
+	Parameter DATA_WIDTH0 bound to: 2 - type: integer 
+	Parameter DATA_WIDTH1 bound to: 2 - type: integer 
+	Parameter LOG2_SUM_LEN bound to: 6 - type: integer 
+	Parameter FIFO_SIZE bound to: 64 - type: integer 
+	Parameter TOTAL_WIDTH0 bound to: 8 - type: integer 
+	Parameter TOTAL_WIDTH1 bound to: 8 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_sync' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1833]
+	Parameter FIFO_MEMORY_TYPE bound to: auto - type: string 
+	Parameter ECC_MODE bound to: no_ecc - type: string 
+	Parameter SIM_ASSERT_CHK bound to: 0 - type: integer 
+	Parameter FIFO_WRITE_DEPTH bound to: 64 - type: integer 
+	Parameter WRITE_DATA_WIDTH bound to: 4 - type: integer 
+	Parameter WR_DATA_COUNT_WIDTH bound to: 7 - type: integer 
+	Parameter PROG_FULL_THRESH bound to: 10 - type: integer 
+	Parameter FULL_RESET_VALUE bound to: 0 - type: integer 
+	Parameter USE_ADV_FEATURES bound to: 0404 - type: string 
+	Parameter READ_MODE bound to: fwft - type: string 
+	Parameter FIFO_READ_LATENCY bound to: 0 - type: integer 
+	Parameter READ_DATA_WIDTH bound to: 4 - type: integer 
+	Parameter RD_DATA_COUNT_WIDTH bound to: 7 - type: integer 
+	Parameter PROG_EMPTY_THRESH bound to: 10 - type: integer 
+	Parameter DOUT_RESET_VALUE bound to: 0 - type: string 
+	Parameter WAKEUP_TIME bound to: 0 - type: integer 
+	Parameter EN_ADV_FEATURE_SYNC bound to: 16'b0000010000000100 
+	Parameter P_FIFO_MEMORY_TYPE bound to: 0 - type: integer 
+	Parameter P_COMMON_CLOCK bound to: 1 - type: integer 
+	Parameter P_ECC_MODE bound to: 0 - type: integer 
+	Parameter P_READ_MODE bound to: 1 - type: integer 
+	Parameter P_WAKEUP_TIME bound to: 2 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_base' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:56]
+	Parameter COMMON_CLOCK bound to: 1 - type: integer 
+	Parameter RELATED_CLOCKS bound to: 0 - type: integer 
+	Parameter FIFO_MEMORY_TYPE bound to: 0 - type: integer 
+	Parameter ECC_MODE bound to: 0 - type: integer 
+	Parameter SIM_ASSERT_CHK bound to: 0 - type: integer 
+	Parameter FIFO_WRITE_DEPTH bound to: 64 - type: integer 
+	Parameter WRITE_DATA_WIDTH bound to: 4 - type: integer 
+	Parameter WR_DATA_COUNT_WIDTH bound to: 7 - type: integer 
+	Parameter PROG_FULL_THRESH bound to: 10 - type: integer 
+	Parameter USE_ADV_FEATURES bound to: 0404 - type: string 
+	Parameter READ_MODE bound to: 1 - type: integer 
+	Parameter FIFO_READ_LATENCY bound to: 0 - type: integer 
+	Parameter READ_DATA_WIDTH bound to: 4 - type: integer 
+	Parameter RD_DATA_COUNT_WIDTH bound to: 7 - type: integer 
+	Parameter PROG_EMPTY_THRESH bound to: 10 - type: integer 
+	Parameter DOUT_RESET_VALUE bound to: 0 - type: string 
+	Parameter CDC_DEST_SYNC_FF bound to: 2 - type: integer 
+	Parameter FULL_RESET_VALUE bound to: 0 - type: integer 
+	Parameter REMOVE_WR_RD_PROT_LOGIC bound to: 0 - type: integer 
+	Parameter WAKEUP_TIME bound to: 0 - type: integer 
+	Parameter VERSION bound to: 0 - type: integer 
+	Parameter invalid bound to: 0 - type: integer 
+	Parameter stage1_valid bound to: 2 - type: integer 
+	Parameter stage2_valid bound to: 1 - type: integer 
+	Parameter both_stages_valid bound to: 3 - type: integer 
+	Parameter FIFO_MEM_TYPE bound to: 0 - type: integer 
+	Parameter RD_MODE bound to: 1 - type: integer 
+	Parameter ENABLE_ECC bound to: 0 - type: integer 
+	Parameter FIFO_READ_DEPTH bound to: 64 - type: integer 
+	Parameter FIFO_SIZE bound to: 256 - type: integer 
+	Parameter WR_WIDTH_LOG bound to: 2 - type: integer 
+	Parameter WR_DEPTH_LOG bound to: 6 - type: integer 
+	Parameter WR_PNTR_WIDTH bound to: 6 - type: integer 
+	Parameter RD_PNTR_WIDTH bound to: 6 - type: integer 
+	Parameter FULL_RST_VAL bound to: 1'b0 
+	Parameter WR_RD_RATIO bound to: 0 - type: integer 
+	Parameter PF_THRESH_ADJ bound to: 8 - type: integer 
+	Parameter PE_THRESH_ADJ bound to: 8 - type: integer 
+	Parameter PF_THRESH_MIN bound to: 5 - type: integer 
+	Parameter PF_THRESH_MAX bound to: 59 - type: integer 
+	Parameter PE_THRESH_MIN bound to: 5 - type: integer 
+	Parameter PE_THRESH_MAX bound to: 59 - type: integer 
+	Parameter WR_DC_WIDTH_EXT bound to: 7 - type: integer 
+	Parameter RD_DC_WIDTH_EXT bound to: 7 - type: integer 
+	Parameter RD_LATENCY bound to: 2 - type: integer 
+	Parameter WIDTH_RATIO bound to: 1 - type: integer 
+	Parameter EN_ADV_FEATURE bound to: 16'b0000010000000100 
+	Parameter EN_OF bound to: 1'b0 
+	Parameter EN_PF bound to: 1'b0 
+	Parameter EN_WDC bound to: 1'b1 
+	Parameter EN_AF bound to: 1'b0 
+	Parameter EN_WACK bound to: 1'b0 
+	Parameter FG_EQ_ASYM_DOUT bound to: 1'b0 
+	Parameter EN_UF bound to: 1'b0 
+	Parameter EN_PE bound to: 1'b0 
+	Parameter EN_RDC bound to: 1'b1 
+	Parameter EN_AE bound to: 1'b0 
+	Parameter EN_DVLD bound to: 1'b0 
+INFO: [Synth 8-6157] synthesizing module 'xpm_memory_base' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:57]
+	Parameter MEMORY_TYPE bound to: 1 - type: integer 
+	Parameter MEMORY_SIZE bound to: 256 - type: integer 
+	Parameter MEMORY_PRIMITIVE bound to: 0 - type: integer 
+	Parameter CLOCKING_MODE bound to: 0 - type: integer 
+	Parameter ECC_MODE bound to: 0 - type: integer 
+	Parameter MEMORY_INIT_FILE bound to: none - type: string 
+	Parameter MEMORY_INIT_PARAM bound to: (null) - type: string 
+	Parameter USE_MEM_INIT bound to: 0 - type: integer 
+	Parameter MEMORY_OPTIMIZATION bound to: true - type: string 
+	Parameter WAKEUP_TIME bound to: 0 - type: integer 
+	Parameter AUTO_SLEEP_TIME bound to: 0 - type: integer 
+	Parameter MESSAGE_CONTROL bound to: 0 - type: integer 
+	Parameter VERSION bound to: 0 - type: integer 
+	Parameter USE_EMBEDDED_CONSTRAINT bound to: 0 - type: integer 
+	Parameter CASCADE_HEIGHT bound to: 0 - type: integer 
+	Parameter SIM_ASSERT_CHK bound to: 0 - type: integer 
+	Parameter WRITE_DATA_WIDTH_A bound to: 4 - type: integer 
+	Parameter READ_DATA_WIDTH_A bound to: 4 - type: integer 
+	Parameter BYTE_WRITE_WIDTH_A bound to: 4 - type: integer 
+	Parameter ADDR_WIDTH_A bound to: 6 - type: integer 
+	Parameter READ_RESET_VALUE_A bound to: 0 - type: string 
+	Parameter READ_LATENCY_A bound to: 2 - type: integer 
+	Parameter WRITE_MODE_A bound to: 2 - type: integer 
+	Parameter RST_MODE_A bound to: SYNC - type: string 
+	Parameter WRITE_DATA_WIDTH_B bound to: 4 - type: integer 
+	Parameter READ_DATA_WIDTH_B bound to: 4 - type: integer 
+	Parameter BYTE_WRITE_WIDTH_B bound to: 4 - type: integer 
+	Parameter ADDR_WIDTH_B bound to: 6 - type: integer 
+	Parameter READ_RESET_VALUE_B bound to: 0 - type: string 
+	Parameter READ_LATENCY_B bound to: 2 - type: integer 
+	Parameter WRITE_MODE_B bound to: 2 - type: integer 
+	Parameter RST_MODE_B bound to: SYNC - type: string 
+	Parameter P_MEMORY_PRIMITIVE bound to: auto - type: string 
+	Parameter P_MIN_WIDTH_DATA_A bound to: 4 - type: integer 
+	Parameter P_MIN_WIDTH_DATA_B bound to: 4 - type: integer 
+	Parameter P_MIN_WIDTH_DATA bound to: 4 - type: integer 
+	Parameter P_MIN_WIDTH_DATA_ECC bound to: 4 - type: integer 
+	Parameter P_MAX_DEPTH_DATA bound to: 64 - type: integer 
+	Parameter P_ECC_MODE bound to: no_ecc - type: string 
+	Parameter P_MEMORY_OPT bound to: yes - type: string 
+	Parameter P_WIDTH_COL_WRITE_A bound to: 4 - type: integer 
+	Parameter P_WIDTH_COL_WRITE_B bound to: 4 - type: integer 
+	Parameter P_NUM_COLS_WRITE_A bound to: 1 - type: integer 
+	Parameter P_NUM_COLS_WRITE_B bound to: 1 - type: integer 
+	Parameter P_NUM_ROWS_WRITE_A bound to: 1 - type: integer 
+	Parameter P_NUM_ROWS_WRITE_B bound to: 1 - type: integer 
+	Parameter P_NUM_ROWS_READ_A bound to: 1 - type: integer 
+	Parameter P_NUM_ROWS_READ_B bound to: 1 - type: integer 
+	Parameter P_WIDTH_ADDR_WRITE_A bound to: 6 - type: integer 
+	Parameter P_WIDTH_ADDR_WRITE_B bound to: 6 - type: integer 
+	Parameter P_WIDTH_ADDR_READ_A bound to: 6 - type: integer 
+	Parameter P_WIDTH_ADDR_READ_B bound to: 6 - type: integer 
+	Parameter P_WIDTH_ADDR_LSB_WRITE_A bound to: 0 - type: integer 
+	Parameter P_WIDTH_ADDR_LSB_WRITE_B bound to: 0 - type: integer 
+	Parameter P_WIDTH_ADDR_LSB_READ_A bound to: 0 - type: integer 
+	Parameter P_WIDTH_ADDR_LSB_READ_B bound to: 0 - type: integer 
+	Parameter P_ENABLE_BYTE_WRITE_A bound to: 0 - type: integer 
+	Parameter P_ENABLE_BYTE_WRITE_B bound to: 0 - type: integer 
+	Parameter P_SDP_WRITE_MODE bound to: yes - type: string 
+	Parameter rsta_loop_iter bound to: 4 - type: integer 
+	Parameter rstb_loop_iter bound to: 4 - type: integer 
+	Parameter NUM_CHAR_LOC bound to: 0 - type: integer 
+	Parameter MAX_NUM_CHAR bound to: 0 - type: integer 
+	Parameter P_MIN_WIDTH_DATA_SHFT bound to: 5 - type: integer 
+	Parameter P_MIN_WIDTH_DATA_LDW bound to: 4 - type: integer 
+INFO: [Synth 8-6059] Synth Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value.   [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:486]
+WARNING: [Synth 8-6014] Unused sequential element gen_rd_b.gen_doutb_pipe.enb_pipe_reg[0] was removed.  [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:2882]
+INFO: [Synth 8-5772] Detected attribute (* ram_ecc = "no_ecc" *) on RAM gen_wr_a.gen_word_narrow.mem_reg 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_memory_base' (1#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:57]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_reg_bit' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1788]
+	Parameter RST_VALUE bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_reg_bit' (2#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1788]
+INFO: [Synth 8-226] default block is never used [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1187]
+INFO: [Synth 8-226] default block is never used [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1233]
+INFO: [Synth 8-226] default block is never used [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1244]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+	Parameter COUNTER_WIDTH bound to: 2 - type: integer 
+	Parameter RESET_VALUE bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn' (3#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+INFO: [Synth 8-6157] synthesizing module 'xpm_fifo_rst' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1504]
+	Parameter COMMON_CLOCK bound to: 1 - type: integer 
+	Parameter CDC_DEST_SYNC_FF bound to: 2 - type: integer 
+	Parameter SIM_ASSERT_CHK bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_rst' (4#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1504]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized0' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+	Parameter COUNTER_WIDTH bound to: 7 - type: integer 
+	Parameter RESET_VALUE bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized0' (4#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized1' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+	Parameter COUNTER_WIDTH bound to: 6 - type: integer 
+	Parameter RESET_VALUE bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized1' (4#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+INFO: [Synth 8-6157] synthesizing module 'xpm_counter_updn__parameterized2' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+	Parameter COUNTER_WIDTH bound to: 6 - type: integer 
+	Parameter RESET_VALUE bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_counter_updn__parameterized2' (4#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1740]
+INFO: [Synth 8-5772] Detected attribute (* rw_addr_collision = "yes" *) on RAM gen_wr_a.gen_word_narrow.mem_reg 
+INFO: [Synth 8-4471] merging register 'gen_fwft.empty_fwft_fb_reg' into 'gen_fwft.empty_fwft_i_reg' [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1292]
+WARNING: [Synth 8-6014] Unused sequential element gen_fwft.empty_fwft_fb_reg was removed.  [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1292]
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_base' (5#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:56]
+INFO: [Synth 8-5772] Detected attribute (* rw_addr_collision = "yes" *) on RAM gen_wr_a.gen_word_narrow.mem_reg 
+INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_sync' (6#1) [D:/Installed/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1833]
+INFO: [Synth 8-5772] Detected attribute (* rw_addr_collision = "yes" *) on RAM gen_wr_a.gen_word_narrow.mem_reg 
+INFO: [Synth 8-6155] done synthesizing module 'running_sum_dual_ch' (7#1) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/running_sum_dual_ch.v:35]
+INFO: [Synth 8-5772] Detected attribute (* rw_addr_collision = "yes" *) on RAM gen_wr_a.gen_word_narrow.mem_reg 
+INFO: [Synth 8-6155] done synthesizing module 'signal_watchdog' (8#1) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/signal_watchdog.v:43]
+WARNING: [Synth 8-4446] all outputs are unconnected for this instance and logic may be removed [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/openofdm_rx.v:179]
+INFO: [Synth 8-6157] synthesizing module 'dot11' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:46]
+	Parameter PI bound to: 1608 - type: integer 
+	Parameter DOUBLE_PI bound to: 3216 - type: integer 
+	Parameter PI_2 bound to: 804 - type: integer 
+	Parameter PI_4 bound to: 402 - type: integer 
+	Parameter PI_3_4 bound to: 1206 - type: integer 
+	Parameter SPI_REG_REGISTER_WIDTH bound to: 32 - type: integer 
+	Parameter SPI_REG_ADDRESS_WIDTH bound to: 7 - type: integer 
+	Parameter CR_POWER_THRES bound to: 3 - type: integer 
+	Parameter CR_POWER_WINDOW bound to: 4 - type: integer 
+	Parameter CR_SKIP_SAMPLE bound to: 5 - type: integer 
+	Parameter CR_MIN_PLATEAU bound to: 6 - type: integer 
+	Parameter S_WAIT_POWER_TRIGGER bound to: 0 - type: integer 
+	Parameter S_SYNC_SHORT bound to: 1 - type: integer 
+	Parameter S_SYNC_LONG bound to: 2 - type: integer 
+	Parameter S_DECODE_SIGNAL bound to: 3 - type: integer 
+	Parameter S_CHECK_SIGNAL bound to: 4 - type: integer 
+	Parameter S_DETECT_HT bound to: 5 - type: integer 
+	Parameter S_HT_SIGNAL bound to: 6 - type: integer 
+	Parameter S_CHECK_HT_SIG_CRC bound to: 7 - type: integer 
+	Parameter S_CHECK_HT_SIG bound to: 8 - type: integer 
+	Parameter S_HT_STS bound to: 9 - type: integer 
+	Parameter S_HT_LTS bound to: 10 - type: integer 
+	Parameter S_MPDU_DELIM bound to: 11 - type: integer 
+	Parameter S_DECODE_DATA bound to: 12 - type: integer 
+	Parameter S_MPDU_PAD bound to: 13 - type: integer 
+	Parameter S_SIGNAL_ERROR bound to: 14 - type: integer 
+	Parameter S_HT_SIG_ERROR bound to: 16 - type: integer 
+	Parameter S_DECODE_DONE bound to: 15 - type: integer 
+	Parameter E_OK bound to: 0 - type: integer 
+	Parameter E_PARITY_FAIL bound to: 1 - type: integer 
+	Parameter E_UNSUPPORTED_RATE bound to: 2 - type: integer 
+	Parameter E_WRONG_RSVD bound to: 3 - type: integer 
+	Parameter E_WRONG_TAIL bound to: 4 - type: integer 
+	Parameter E_UNSUPPORTED_MCS bound to: 8 - type: integer 
+	Parameter E_UNSUPPORTED_CBW bound to: 9 - type: integer 
+	Parameter E_HT_WRONG_RSVD bound to: 10 - type: integer 
+	Parameter E_UNSUPPORTED_STBC bound to: 11 - type: integer 
+	Parameter E_UNSUPPORTED_FEC bound to: 12 - type: integer 
+	Parameter E_UNSUPPORTED_SGI bound to: 13 - type: integer 
+	Parameter E_UNSUPPORTED_SPATIAL bound to: 14 - type: integer 
+	Parameter E_HT_WRONG_TAIL bound to: 15 - type: integer 
+	Parameter E_HT_AMPDU_WARN bound to: 16 - type: integer 
+	Parameter E_HT_AMPDU_ERROR bound to: 17 - type: integer 
+	Parameter E_WRONG_CRC bound to: 18 - type: integer 
+	Parameter E_WRONG_FCS bound to: 31 - type: integer 
+	Parameter EXPECTED_FCS bound to: -955982469 - type: integer 
+INFO: [Synth 8-5534] Detected attribute (* keep = "true" *) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:104]
+INFO: [Synth 8-5534] Detected attribute (* keep = "true" *) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:127]
+INFO: [Synth 8-5534] Detected attribute (* keep = "true" *) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:229]
+INFO: [Synth 8-5534] Detected attribute (* keep = "true" *) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:230]
+INFO: [Synth 8-6157] synthesizing module 'rot_lut' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/rot_lut/rot_lut.v:40]
+INFO: [Synth 8-6155] done synthesizing module 'rot_lut' (9#1) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/rot_lut/rot_lut.v:40]
+INFO: [Synth 8-6157] synthesizing module 'phase' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/phase.v:37]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter PI bound to: 1608 - type: integer 
+	Parameter DOUBLE_PI bound to: 3216 - type: integer 
+	Parameter PI_2 bound to: 804 - type: integer 
+	Parameter PI_4 bound to: 402 - type: integer 
+	Parameter PI_3_4 bound to: 1206 - type: integer 
+	Parameter SPI_REG_REGISTER_WIDTH bound to: 32 - type: integer 
+	Parameter SPI_REG_ADDRESS_WIDTH bound to: 7 - type: integer 
+	Parameter CR_POWER_THRES bound to: 3 - type: integer 
+	Parameter CR_POWER_WINDOW bound to: 4 - type: integer 
+	Parameter CR_SKIP_SAMPLE bound to: 5 - type: integer 
+	Parameter CR_MIN_PLATEAU bound to: 6 - type: integer 
+	Parameter S_WAIT_POWER_TRIGGER bound to: 0 - type: integer 
+	Parameter S_SYNC_SHORT bound to: 1 - type: integer 
+	Parameter S_SYNC_LONG bound to: 2 - type: integer 
+	Parameter S_DECODE_SIGNAL bound to: 3 - type: integer 
+	Parameter S_CHECK_SIGNAL bound to: 4 - type: integer 
+	Parameter S_DETECT_HT bound to: 5 - type: integer 
+	Parameter S_HT_SIGNAL bound to: 6 - type: integer 
+	Parameter S_CHECK_HT_SIG_CRC bound to: 7 - type: integer 
+	Parameter S_CHECK_HT_SIG bound to: 8 - type: integer 
+	Parameter S_HT_STS bound to: 9 - type: integer 
+	Parameter S_HT_LTS bound to: 10 - type: integer 
+	Parameter S_MPDU_DELIM bound to: 11 - type: integer 
+	Parameter S_DECODE_DATA bound to: 12 - type: integer 
+	Parameter S_MPDU_PAD bound to: 13 - type: integer 
+	Parameter S_SIGNAL_ERROR bound to: 14 - type: integer 
+	Parameter S_HT_SIG_ERROR bound to: 16 - type: integer 
+	Parameter S_DECODE_DONE bound to: 15 - type: integer 
+	Parameter E_OK bound to: 0 - type: integer 
+	Parameter E_PARITY_FAIL bound to: 1 - type: integer 
+	Parameter E_UNSUPPORTED_RATE bound to: 2 - type: integer 
+	Parameter E_WRONG_RSVD bound to: 3 - type: integer 
+	Parameter E_WRONG_TAIL bound to: 4 - type: integer 
+	Parameter E_UNSUPPORTED_MCS bound to: 8 - type: integer 
+	Parameter E_UNSUPPORTED_CBW bound to: 9 - type: integer 
+	Parameter E_HT_WRONG_RSVD bound to: 10 - type: integer 
+	Parameter E_UNSUPPORTED_STBC bound to: 11 - type: integer 
+	Parameter E_UNSUPPORTED_FEC bound to: 12 - type: integer 
+	Parameter E_UNSUPPORTED_SGI bound to: 13 - type: integer 
+	Parameter E_UNSUPPORTED_SPATIAL bound to: 14 - type: integer 
+	Parameter E_HT_WRONG_TAIL bound to: 15 - type: integer 
+	Parameter E_HT_AMPDU_WARN bound to: 16 - type: integer 
+	Parameter E_HT_AMPDU_ERROR bound to: 17 - type: integer 
+	Parameter E_WRONG_CRC bound to: 18 - type: integer 
+	Parameter E_WRONG_FCS bound to: 31 - type: integer 
+	Parameter EXPECTED_FCS bound to: -955982469 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'delayT' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/delayT.v:36]
+	Parameter DATA_WIDTH bound to: 1 - type: integer 
+	Parameter DELAY bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'delayT' (10#1) [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/delayT.v:36]
+INFO: [Synth 8-6157] synthesizing module 'divider' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/divider.v:46]
+INFO: [Synth 8-6157] synthesizing module 'div_gen' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/div_gen.v:13]
+ERROR: [Synth 8-439] module 'div_gen_div_gen_0_0' not found [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/div_gen.v:41]
+ERROR: [Synth 8-6156] failed synthesizing module 'div_gen' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/div_gen.v:13]
+ERROR: [Synth 8-6156] failed synthesizing module 'divider' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/divider.v:46]
+ERROR: [Synth 8-6156] failed synthesizing module 'phase' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/phase.v:37]
+ERROR: [Synth 8-6156] failed synthesizing module 'dot11' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/dot11.v:46]
+ERROR: [Synth 8-6156] failed synthesizing module 'openofdm_rx' [C:/Users/sharjeel/Desktop/Viterbi/RX/verilog/openofdm_rx.v:13]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 888.137 ; gain = 229.957
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+55 Infos, 52 Warnings, 0 Critical Warnings and 7 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Thu Dec 26 09:20:45 2024...

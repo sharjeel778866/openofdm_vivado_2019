@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Dec 26 09:18:53 2024
+# Process ID: 11640
+# Current directory: C:/Users/sharjeel/Desktop/Viterbi/RX
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11476 C:\Users\sharjeel\Desktop\Viterbi\RX\RX.xpr
+# Log file: C:/Users/sharjeel/Desktop/Viterbi/RX/vivado.log
+# Journal file: C:/Users/sharjeel/Desktop/Viterbi/RX\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/sharjeel/Desktop/Viterbi/RX/RX.xpr
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs synth_1 -jobs 10
+wait_on_run synth_1
+export_ip_user_files -of_objects  [get_files C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/atan_lut.coe] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/deinter_lut.coe] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/rot_lut.coe] -no_script -reset -force -quiet
+remove_files  {C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/atan_lut.coe C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/deinter_lut.coe C:/home/jinghaos/projects/jammer/uhd/fpga-src/usrp2/custom/rot_lut.coe}
+reset_run synth_1
+launch_runs synth_1 -jobs 10
+wait_on_run synth_1

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Thu Dec 26 09:20:36 2024
+# Process ID: 12716
+# Current directory: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1
+# Command line: vivado.exe -log openofdm_rx.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source openofdm_rx.tcl
+# Log file: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1/openofdm_rx.vds
+# Journal file: C:/Users/sharjeel/Desktop/Viterbi/RX/RX.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source openofdm_rx.tcl -notrace
